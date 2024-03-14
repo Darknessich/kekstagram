@@ -1,3 +1,1 @@
-import { createPhotosData } from './data.js';
-
-createPhotosData();
+import './pictures.js';
