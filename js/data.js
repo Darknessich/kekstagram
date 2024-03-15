@@ -4,9 +4,9 @@ import {
   createIdGenerator
 } from './util.js';
 
-const PUBLISHED_PHOTOS_COUNT = 25;
+const PUBLISHED_PICTURES_COUNT = 25;
 
-const PhotoSettings = {
+const PictureSettings = {
   ID_RANGE: {
     MIN: 1,
     MAX: 25
@@ -67,14 +67,14 @@ const CommentSettings = {
 
 const commentIdGenerator = createIdGenerator(0);
 
-const photoUrlIdGenerator = createIdGenerator(
-  PhotoSettings.URL_ID_RANGE.MIN,
-  PhotoSettings.URL_ID_RANGE.MAX
+const pictureUrlIdGenerator = createIdGenerator(
+  PictureSettings.URL_ID_RANGE.MIN,
+  PictureSettings.URL_ID_RANGE.MAX
 );
 
-const photoIdGenerator = createIdGenerator(
-  PhotoSettings.ID_RANGE.MIN,
-  PhotoSettings.ID_RANGE.MAX
+const pictureIdGenerator = createIdGenerator(
+  PictureSettings.ID_RANGE.MIN,
+  PictureSettings.ID_RANGE.MAX
 );
 
 function Comment(id, avatar, message, name) {
@@ -96,7 +96,7 @@ function generateRandomComment() {
   );
 }
 
-function Photo(id, url, description, likesCount, comments) {
+function Picture(id, url, description, likesCount, comments) {
   this.id = id;
   this.url = url;
   this.description = description;
@@ -104,20 +104,20 @@ function Photo(id, url, description, likesCount, comments) {
   this.comments = comments;
 }
 
-function generateRandomPhoto() {
-  return new Photo(
-    photoIdGenerator(),
-    `photos/${photoUrlIdGenerator()}.jpg`,
-    getRandomElement(PhotoSettings.DESCRIPTIONS_DATA),
+function generateRandomPicture() {
+  return new Picture(
+    pictureIdGenerator(),
+    `photos/${pictureUrlIdGenerator()}.jpg`,
+    getRandomElement(PictureSettings.DESCRIPTIONS_DATA),
     getRandomInteger(
-      PhotoSettings.LIKES_COUNT_RANGE.MIN,
-      PhotoSettings.LIKES_COUNT_RANGE.MAX
+      PictureSettings.LIKES_COUNT_RANGE.MIN,
+      PictureSettings.LIKES_COUNT_RANGE.MAX
     ),
     Array.from(
       {
         length: getRandomInteger(
-          PhotoSettings.COMMENTS_COUNT_RANGE.MIN,
-          PhotoSettings.COMMENTS_COUNT_RANGE.MAX,
+          PictureSettings.COMMENTS_COUNT_RANGE.MIN,
+          PictureSettings.COMMENTS_COUNT_RANGE.MAX,
         )
       },
       generateRandomComment
@@ -125,8 +125,8 @@ function generateRandomPhoto() {
   );
 }
 
-function createPhotosData() {
-  return Array.from({ length: PUBLISHED_PHOTOS_COUNT }, generateRandomPhoto);
+function createPicturesData() {
+  return Array.from({ length: PUBLISHED_PICTURES_COUNT }, generateRandomPicture);
 }
 
-export { createPhotosData };
+export { createPicturesData };
