@@ -66,10 +66,12 @@ const CommentSettings = {
 };
 
 const commentIdGenerator = createIdGenerator(0);
+
 const photoUrlIdGenerator = createIdGenerator(
   PhotoSettings.URL_ID_RANGE.MIN,
   PhotoSettings.URL_ID_RANGE.MAX
 );
+
 const photoIdGenerator = createIdGenerator(
   PhotoSettings.ID_RANGE.MIN,
   PhotoSettings.ID_RANGE.MAX
@@ -94,10 +96,10 @@ function generateRandomComment() {
   );
 }
 
-function Photo(id, url, desctription, likesCount, comments) {
+function Photo(id, url, description, likesCount, comments) {
   this.id = id;
   this.url = url;
-  this.desctription = desctription;
+  this.description = description;
   this.likes = likesCount;
   this.comments = comments;
 }

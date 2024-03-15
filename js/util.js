@@ -27,8 +27,11 @@ function createIdGenerator(min = 0, max = Number.MAX_SAFE_INTEGER) {
   };
 }
 
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
 export {
   getRandomInteger,
   getRandomElement,
-  createIdGenerator
+  createIdGenerator,
+  isEscapeKey
 };
