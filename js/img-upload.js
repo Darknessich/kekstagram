@@ -1,4 +1,6 @@
 import { isEscapeKey } from './util.js';
+import { scaleReset } from './scale.js';
+import { resetEffects } from './effects.js';
 
 const ValidateSettings = {
   TAGS_COUNT_LIMIT: 5,
@@ -61,6 +63,8 @@ function closeUploadModal() {
   uploadModal.classList.add('hidden');
   uploadForm.reset();
   pristine.reset();
+  resetEffects();
+  scaleReset();
 
   document.removeEventListener('keydown', onDocumentKeyDown);
 }
