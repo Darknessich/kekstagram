@@ -1,5 +1,6 @@
-import { renderThumbnails } from './thumbnails.js';
+import './img-upload.js';
 import { openBigPicture } from './big-picture.js';
+import { renderThumbnails } from './thumbnails.js';
 
 const container = document.querySelector('.pictures');
 
