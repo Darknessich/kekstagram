@@ -17,7 +17,7 @@ const BPCommentTemplate =
 const BPLoader = bigPicture.querySelector('.comments-loader');
 const BPCancel = bigPicture.querySelector('.big-picture__cancel');
 
-let onClickLoader = null;
+let onBPLoaderClick = null;
 
 function onDocumentKeyDown(evt) {
   if (isEscapeKey(evt)) {
@@ -26,7 +26,7 @@ function onDocumentKeyDown(evt) {
   }
 }
 
-function onClickCancel() {
+function onBPCancelClick() {
   closeBigPicture();
 }
 
@@ -35,7 +35,7 @@ function closeBigPicture() {
   bigPicture.classList.add('hidden');
 
   document.removeEventListener('keydown', onDocumentKeyDown);
-  BPLoader.removeEventListener('click', onClickLoader);
+  BPLoader.removeEventListener('click', onBPLoaderClick);
 }
 
 function createComment({ avatar, message, name }) {
@@ -84,13 +84,13 @@ function openBigPicture({ url, description, likes, comments }) {
   BPLikes.textContent = likes;
   BPComments.innerHTML = '';
 
-  onClickLoader = createOnClickLoader(comments);
-  onClickLoader();
+  onBPLoaderClick = createOnClickLoader(comments);
+  onBPLoaderClick();
 
   document.addEventListener('keydown', onDocumentKeyDown);
-  BPLoader.addEventListener('click', onClickLoader);
+  BPLoader.addEventListener('click', onBPLoaderClick);
 }
 
-BPCancel.addEventListener('click', onClickCancel);
+BPCancel.addEventListener('click', onBPCancelClick);
 
 export { openBigPicture };
