@@ -1,62 +1,63 @@
 import { isEscapeKey } from './util.js';
 
+const COMMENTS_PER_PORTION = 5;
+
 const bigPicture = document.querySelector('.big-picture');
-const BPImg = bigPicture.querySelector('.big-picture__img > img');
+const BPImage = bigPicture.querySelector('.big-picture__img img');
 const BPCaption = bigPicture.querySelector('.social__caption');
 const BPLikes = bigPicture.querySelector('.likes-count');
+
 const BPComments = bigPicture.querySelector('.social__comments');
-const BPSocialCommentsCount = bigPicture.querySelector('.social__comment-count');
+const BPCommentsCount = bigPicture.querySelector('.comments-count');
+const BPShowCommentsCount = bigPicture.querySelector('.comments-show-count');
+const BPCommentTemplate =
+  document.querySelector('#comment')
+    .content.querySelector('.social__comment');
+
 const BPLoader = bigPicture.querySelector('.comments-loader');
 const BPCancel = bigPicture.querySelector('.big-picture__cancel');
 
-let onLoad = null;
+let onBPLoaderClick = null;
 
-const onDocumentKeyDown = (evt) => {
+function onDocumentKeyDown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeBigPicture();
   }
-};
+}
+
+function onBPCancelClick() {
+  closeBigPicture();
+}
 
 function closeBigPicture() {
   document.body.classList.remove('modal-open');
   bigPicture.classList.add('hidden');
 
   document.removeEventListener('keydown', onDocumentKeyDown);
-  BPLoader.removeEventListener('click', onLoad);
+  BPLoader.removeEventListener('click', onBPLoaderClick);
 }
 
-function createCommentElement({ avatar, message, name }) {
-  const element = document.createElement('li');
-  const elementImg = document.createElement('img');
-  const elementText = document.createElement('p');
+function createComment({ avatar, message, name }) {
+  const element = BPCommentTemplate.cloneNode(true);
+  const image = element.querySelector('.social__picture');
 
-  element.classList.add('social__comment');
-  elementImg.classList.add('social__picture');
-  elementText.classList.add('social__text');
-
-  elementImg.src = avatar;
-  elementImg.alt = name;
-  elementImg.width = 35;
-  elementImg.height = 35;
-
-  elementText.textContent = message;
-
-  element.append(elementImg);
-  element.append(elementText);
+  image.alt = name;
+  image.src = avatar;
+  element.querySelector('.social__text').textContent = message;
 
   return element;
 }
 
-function createHandleLoad(comments) {
+function createOnClickLoader(comments) {
   let commentsCount = 0;
   return () => {
     const commentsFragment = document.createDocumentFragment();
-    const delta = Math.min(comments.length - commentsCount, 5);
+    const delta = Math.min(comments.length - commentsCount, COMMENTS_PER_PORTION);
 
     for (let i = 0; i < delta; ++i) {
       commentsFragment.appendChild(
-        createCommentElement(comments[commentsCount + i])
+        createComment(comments[commentsCount + i])
       );
     }
 
@@ -67,7 +68,7 @@ function createHandleLoad(comments) {
       BPLoader.classList.add('hidden');
     }
 
-    BPSocialCommentsCount.innerHTML = `${commentsCount} из <span class="comments-count">${comments.length}</span> комментариев`;
+    BPShowCommentsCount.textContent = commentsCount;
   };
 }
 
@@ -76,19 +77,20 @@ function openBigPicture({ url, description, likes, comments }) {
   bigPicture.classList.remove('hidden');
   BPLoader.classList.remove('hidden');
 
-  BPImg.src = url;
-  BPImg.alt = description;
+  BPImage.src = url;
+  BPImage.alt = description;
   BPCaption.textContent = description;
+  BPCommentsCount.textContent = comments.length;
   BPLikes.textContent = likes;
   BPComments.innerHTML = '';
 
-  onLoad = createHandleLoad(comments);
-  onLoad();
+  onBPLoaderClick = createOnClickLoader(comments);
+  onBPLoaderClick();
 
   document.addEventListener('keydown', onDocumentKeyDown);
-  BPLoader.addEventListener('click', onLoad);
+  BPLoader.addEventListener('click', onBPLoaderClick);
 }
 
-BPCancel.addEventListener('click', closeBigPicture);
+BPCancel.addEventListener('click', onBPCancelClick);
 
 export { openBigPicture };
