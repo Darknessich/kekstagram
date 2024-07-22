@@ -1,5 +1,7 @@
-import { createPicturesData } from './data.js';
-import { renderGallery } from './gallery.js';
+import { renderGallery } from './gallery/gallery.js';
+import { getData } from './api.js';
+import { showAlert } from './util.js';
 
-const pictures = createPicturesData();
-renderGallery(pictures);
+getData()
+  .then((pictures) => renderGallery(pictures))
+  .catch((err) => showAlert(err.message));
