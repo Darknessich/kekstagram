@@ -9,7 +9,10 @@ const SubmitButtonText = {
   SENDING: 'Загрузка...'
 };
 
+const FILE_TYPES = ['jpeg', 'jpg', 'png', 'gif'];
+
 const uploadForm = document.querySelector('#upload-select-image');
+const uploadPreview = uploadForm.querySelector('.img-upload__preview img');
 const uploadFile = uploadForm.querySelector('#upload-file');
 const uploadModal = uploadForm.querySelector('.img-upload__overlay');
 const uploadClose = uploadForm.querySelector('.img-upload__cancel');
@@ -55,10 +58,16 @@ function isFormFocus() {
 }
 
 function openUploadModal() {
-  document.body.classList.add('modal-open');
-  uploadModal.classList.remove('hidden');
+  const file = uploadFile.files[0];
+  const fileName = file.name.toLowerCase();
 
-  document.addEventListener('keydown', onDocumentKeyDown);
+  if (FILE_TYPES.some((type) => fileName.endsWith(type))) {
+    document.body.classList.add('modal-open');
+    uploadModal.classList.remove('hidden');
+
+    document.addEventListener('keydown', onDocumentKeyDown);
+    uploadPreview.src = URL.createObjectURL(file);
+  }
 }
 
 function closeUploadModal() {
